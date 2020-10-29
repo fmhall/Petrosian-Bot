@@ -1,0 +1,4 @@
+numpy
+praw
+python-dotenv
+pickledb
