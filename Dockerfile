@@ -1,4 +1,4 @@
-FROM jackton1/alpine-python3-numpy-pandas
+FROM python:3.8-slim
 
 COPY . app
 RUN pip3 install -r app/requirements.txt
