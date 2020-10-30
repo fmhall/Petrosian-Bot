@@ -97,9 +97,11 @@ def should_comment_on_comment(comment: Comment) -> bool:
     if comment.author == USERNAME:
         if not db.get(obj_id):
             db.set(obj_id, [obj_id])
+            db.dump()
         return False
     if not db.get(obj_id):
         db.set(obj_id, [obj_id])
+        db.dump()
         return True
     return False
 
@@ -117,9 +119,11 @@ def should_comment_on_post(post: Submission) -> bool:
     if post.author == USERNAME:
         if not db.get(obj_id):
             db.set(obj_id, [obj_id])
+            db.dump()
         return False
     if not db.get(obj_id):
         db.set(obj_id, [obj_id])
+        db.dump()
         return True
     return False
 
