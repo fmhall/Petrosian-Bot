@@ -1,10 +1,10 @@
 import os
-from typing import Tuple, Union
+from typing import Union
 from praw import Reddit
 from praw.models import Submission, Subreddit, Comment
 from dotenv import load_dotenv
 import pickledb
-from typing import Iterator, Callable
+from typing import Callable
 import threading
 import logging
 
@@ -157,11 +157,31 @@ if __name__ == "__main__":
     ac_comments_thread = threading.Thread(
         target=iterate_comments, args=("anarchychess",), name="ac_comments"
     )
+    chessbeginners_posts_thread = threading.Thread(
+        target=iterate_posts, args=("chessbeginners",), name="chessbeginners_posts"
+    )
+    tournamentchess_posts_thread = threading.Thread(
+        target=iterate_posts, args=("tournamentchess",), name="tournamentchess_posts"
+    )
+    chessbeginners_comments_thread = threading.Thread(
+        target=iterate_comments,
+        args=("chessbeginners",),
+        name="chessbeginners_comments",
+    )
+    tournamentchess_comments_thread = threading.Thread(
+        target=iterate_comments,
+        args=("tournamentchess",),
+        name="tournamentchess_comments",
+    )
 
     threads.append(chess_posts_thread)
     threads.append(ac_posts_thread)
     threads.append(chess_comments_thread)
     threads.append(ac_comments_thread)
+    threads.append(chessbeginners_posts_thread)
+    threads.append(tournamentchess_posts_thread)
+    threads.append(chessbeginners_comments_thread)
+    threads.append(tournamentchess_comments_thread)
 
     logger.info("Main    : Starting threads")
     for thread in threads:
