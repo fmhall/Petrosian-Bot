@@ -19,7 +19,7 @@ SECRET = os.getenv("CLIENT_SECRET")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
-KEYWORDS = ["pipi", "pampers"]
+KEYWORDS = ["pipi", "pampers", "tigran", "petrosian"]
 
 # Set the path absolute path of the chess_post database
 pickle_path = os.path.dirname(os.path.abspath(__file__)) + "/comments.db"
