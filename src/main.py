@@ -85,6 +85,16 @@ def iterate_posts(subreddit_name: str):
             logger.debug("Not commenting")
 
 
+@restart
+def listen_and_process_mentions():
+    for message in reddit.inbox.stream():
+        subject = message.subject.lower()
+        if subject == 'username mention' and isinstance(message, Comment):
+            write_comment(message)
+            logger.info(f"Added comment to comment {str(message.body)}")
+            message.mark_read()
+
+
 def should_comment_on_comment(comment: Comment) -> bool:
     lower_case_body = str(comment.body).lower()
     obj_id = str(comment.id)
@@ -173,6 +183,10 @@ if __name__ == "__main__":
         args=("tournamentchess",),
         name="tournamentchess_comments",
     )
+    mentions_thread = threading.Thread(
+        target=listen_and_process_mentions,
+        name="mentions",
+    )
 
     threads.append(chess_posts_thread)
     threads.append(ac_posts_thread)
@@ -182,6 +196,7 @@ if __name__ == "__main__":
     threads.append(tournamentchess_posts_thread)
     threads.append(chessbeginners_comments_thread)
     threads.append(tournamentchess_comments_thread)
+    threads.append(mentions_thread)
 
     logger.info("Main    : Starting threads")
     for thread in threads:
