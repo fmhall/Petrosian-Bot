@@ -130,6 +130,8 @@ def should_comment_on_comment(comment: Comment) -> Tuple[bool, bool]:
         if random.randint(0, 1000) == TRIGGER_RANDOMLY:
             return True, False
         return False, is_low_effort
+    if comment.author == "B0tRank":
+        return True, True
     if comment.author == USERNAME:
         if not db.get(obj_id):
             db.set(obj_id, [obj_id])
@@ -170,16 +172,16 @@ def should_comment_on_post(post: Submission) -> Tuple[bool, bool]:
 
 def write_comment(obj: Union[Comment, Submission], is_low_effort: bool = False):
     if is_low_effort:
-        pasta = random.choice(SHORTENED_PHRASES)
+        pasta = random.choice(SHORTENED_PHRASES) + "\n\n"
     else:
         pasta = PASTA
-    # source_tag = (
-    #     "[^(fmhall)](https://www.reddit.com/user/fmhall) ^| [^(github)]({})\n".format(
-    #         "https://github.com/fmhall/Petrosian-Bot"
-    #     )
-    # )
+    source_tag = (
+        "[^(fmhall)](https://www.reddit.com/user/fmhall) ^| [^(github)]({})\n".format(
+            "https://github.com/fmhall/Petrosian-Bot"
+        )
+    )
 
-    comment_string = pasta
+    comment_string = pasta + source_tag
     obj.reply(comment_string)
 
 
