@@ -243,7 +243,7 @@ if __name__ == "__main__":
         name="mentions",
     )
     cleanup_thread = threading.Thread(
-        target=delete_bad_comments, args=USERNAME, name="cleanup"
+        target=delete_bad_comments, args=[USERNAME], name="cleanup"
     )
 
     threads.append(chess_posts_thread)
