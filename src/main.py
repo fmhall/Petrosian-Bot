@@ -79,7 +79,7 @@ def iterate_comments(subreddit_name: str):
 
     for comment in sub.stream.comments():
         logger.debug(f"Analyzing {comment.body}")
-        should_comment, is_low_effort = should_comment_on_comment(comment)
+        should_comment, is_low_effort = should_comment_on_comment(comment, subreddit_name)
         if should_comment:
             write_comment(comment, is_low_effort)
             logger.info(f"Added comment to comment {str(comment.body)}")
@@ -115,7 +115,7 @@ def listen_and_process_mentions():
             message.mark_read()
 
 
-def should_comment_on_comment(comment: Comment) -> Tuple[bool, bool]:
+def should_comment_on_comment(comment: Comment, subreddit_name: str) -> Tuple[bool, bool]:
     body = standardize_text(comment.body)
     obj_id = str(comment.id)
     has_keywords = False
@@ -126,7 +126,7 @@ def should_comment_on_comment(comment: Comment) -> Tuple[bool, bool]:
             has_keywords = True
             if body == keyword:
                 is_low_effort = True
-    if not has_keywords:
+    if not has_keywords and subreddit_name == "anarchychess":
         if random.randint(0, 1000) == TRIGGER_RANDOMLY:
             return True, False
         return False, is_low_effort
@@ -176,8 +176,9 @@ def write_comment(obj: Union[Comment, Submission], is_low_effort: bool = False):
     else:
         pasta = PASTA
     source_tag = (
-        "[^(fmhall)](https://www.reddit.com/user/fmhall) ^| [^(github)]({})\n".format(
-            "https://github.com/fmhall/Petrosian-Bot"
+        "[^(fmhall)](https://www.reddit.com/user/fmhall) ^| [^(github)]({}) ^| [^(chill)]({})\n".format(
+            "https://github.com/fmhall/Petrosian-Bot",
+            "https://www.youtube.com/channel/UCqGhULGgnf6IbY5JXWuVVtQ/live"
         )
     )
 
