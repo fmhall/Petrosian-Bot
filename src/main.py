@@ -22,7 +22,7 @@ SECRET = os.getenv("CLIENT_SECRET")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
-KEYWORDS = {"pipi", "pampers", "tigran", "petrosian"}
+KEYWORDS = {"pipi", "PIPI", "PiPi", "pIpI", "PipI", "pampers", "tigran", "petrosian"}
 DONT_COMMENT_KEYWORD = "!nopipi"
 TRIGGER_RANDOMLY = 7
 
