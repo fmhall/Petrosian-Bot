@@ -121,6 +121,9 @@ def should_comment_on_comment(comment: Comment, subreddit_name: str) -> Tuple[bo
     has_keywords = False
     is_low_effort = False
 
+    if comment.parent_id.startswith('t1_') and (parent:=comment.parent()).parent_id.startswith('t1_'): # parent_id: The ID of the parent comment (prefixed with t1_). If it is a top-level comment, this returns the submission ID instead (prefixed with t3_). (https://praw.readthedocs.io/en/stable/code_overview/models/comment.html)
+        if parent.author.name == USERNAME and parent.parent().author.id == comment.author.id: # if the user is replying to the bot replying to him return false
+            return False, is_low_effort
     for keyword in KEYWORDS:
         if keyword in body and DONT_COMMENT_KEYWORD not in body:
             has_keywords = True
