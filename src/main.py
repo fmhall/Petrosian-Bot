@@ -116,13 +116,16 @@ def listen_and_process_mentions():
 
 
 def should_comment_on_comment(comment: Comment, subreddit_name: str) -> Tuple[bool, bool]:
+    if DONT_COMMENT_KEYWORD.lower() in comment.body.lower():
+        return False, False
+
     body = standardize_text(comment.body)
     obj_id = str(comment.id)
     has_keywords = False
     is_low_effort = False
 
     for keyword in KEYWORDS:
-        if keyword in body and DONT_COMMENT_KEYWORD not in body:
+        if keyword in body:
             has_keywords = True
             if body == keyword:
                 is_low_effort = True
@@ -145,6 +148,12 @@ def should_comment_on_comment(comment: Comment, subreddit_name: str) -> Tuple[bo
 
 
 def should_comment_on_post(post: Submission) -> Tuple[bool, bool]:
+    if (
+        DONT_COMMENT_KEYWORD.lower() in post.selftext.lower() 
+        or DONT_COMMENT_KEYWORD.lower() in post.title.lower()
+    ):
+        return False, False
+
     body = standardize_text(post.selftext)
     title = standardize_text(post.title)
     obj_id = str(post.id)
@@ -152,7 +161,7 @@ def should_comment_on_post(post: Submission) -> Tuple[bool, bool]:
     is_low_effort = False
     for keyword in KEYWORDS:
         for text in [body, title]:
-            if keyword in text and DONT_COMMENT_KEYWORD not in text:
+            if keyword in text:
                 has_keywords = True
                 if text == keyword:
                     is_low_effort = True
